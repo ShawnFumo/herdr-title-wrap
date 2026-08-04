@@ -14,9 +14,9 @@ cleared (reported as `null`).
 ## Install
 
 ```sh
-herdr plugin install T0mSIlver/herdr-session-title     # from GitHub
+herdr plugin install T0mSIlver/herdr-title-wrap     # from GitHub
 # or, from a local checkout:
-herdr plugin link /path/to/herdr-session-title
+herdr plugin link /path/to/herdr-title-wrap
 ```
 
 Then add the sidebar rows to `~/.config/herdr/config.toml` (Herdr plugins
