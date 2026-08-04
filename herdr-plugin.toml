@@ -1,0 +1,50 @@
+# herdr title-wrap: wrapped Claude Code session titles in the agent sidebar.
+#
+# All hooks run watcher.py --ensure, which spawns one detached daemon per
+# herdr server (flock singleton) and returns immediately, so startup is
+# never delayed. The daemon subscribes to pane.updated on the socket API —
+# plugin [[events]] deliberately exclude that high-volume event, so a
+# persistent subscriber is the only way to follow title changes. It exits
+# when the server socket closes; the hooks below bring it back.
+#
+# Requires a one-time config.toml addition to render the tokens; run the
+# print-config action (herdr plugin action invoke title-wrap.print-config)
+# or see the README.
+
+id = "title-wrap"
+name = "Title Wrap"
+version = "0.1.0"
+min_herdr_version = "0.7.5"
+description = "Wrap Claude Code session titles across multiple sidebar rows, auto-fitting the sidebar width"
+platforms = ["linux", "macos"]
+
+[[startup]]
+command = ["python3", "bin/watcher.py", "--ensure"]
+
+# Keepalive: these fire exactly when a pane that needs wrapping can appear,
+# and --ensure is a no-op while the daemon is healthy.
+[[events]]
+on = "pane.created"
+command = ["python3", "bin/watcher.py", "--ensure"]
+
+[[events]]
+on = "pane.agent_detected"
+command = ["python3", "bin/watcher.py", "--ensure"]
+
+[[actions]]
+id = "status"
+title = "Title wrap: daemon status"
+contexts = ["workspace"]
+command = ["python3", "bin/watcher.py", "--status"]
+
+[[actions]]
+id = "restart"
+title = "Title wrap: restart daemon"
+contexts = ["workspace"]
+command = ["python3", "bin/watcher.py", "--restart"]
+
+[[actions]]
+id = "print-config"
+title = "Title wrap: print sidebar config snippet"
+contexts = ["workspace"]
+command = ["python3", "bin/watcher.py", "--print-config"]
