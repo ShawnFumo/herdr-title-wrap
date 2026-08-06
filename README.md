@@ -11,6 +11,9 @@ full session name is readable. Rows without a value are hidden by Herdr, so
 short titles collapse to fewer rows; when a title shrinks, unused lines are
 cleared (reported as `null`).
 
+<img src="docs/screenshot.png" width="345"
+     alt="Herdr agents sidebar with Claude Code session titles word-wrapped across multiple rows">
+
 ## Install
 
 ```sh
